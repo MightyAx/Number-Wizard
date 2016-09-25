@@ -37,6 +37,53 @@ public class NumberWizard : MonoBehaviour
 		print ("Higher (Up Arrow), Lower (Down Arrow) or Equal (Return)");
 	}
 
+	void ProcessInput ()
+	{
+		if (sessionGuess == sessionMin && sessionGuess == sessionMax)
+		{
+			End (CheatMessage);
+		}
+		else
+		{
+			if (Input.GetKeyDown (KeyCode.UpArrow))
+			{
+				SetMin ();
+			}
+			else if (Input.GetKeyDown (KeyCode.DownArrow))
+			{
+				SetMax ();
+			}
+		}
+	}
+
+	void SetMin ()
+	{
+		int newMin = sessionGuess + 1;
+		if (newMin > sessionMax)
+		{
+			End (CheatMessage);
+		}
+		else
+		{
+			sessionMin = newMin;
+			UpdateGuess ();
+		}	
+	}
+
+	void SetMax ()
+	{
+		int newMax = sessionGuess - 1;
+		if (newMax < sessionMin)
+		{
+			End (CheatMessage);
+		}
+		else
+		{
+			sessionMax = newMax;
+			UpdateGuess ();
+		}
+	}
+	
 	void End (string scoreMessage)
 	{
 		print (string.Format (scoreMessage, sessionScore));
@@ -55,39 +102,7 @@ public class NumberWizard : MonoBehaviour
 			}
 			else if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.DownArrow))
 			{
-				if (sessionGuess == sessionMin && sessionGuess == sessionMax)
-				{
-					End (CheatMessage);
-				}
-				else
-				{
-					if (Input.GetKeyDown (KeyCode.UpArrow))
-					{
-						int newMin = sessionGuess + 1;
-						if (newMin > sessionMax)
-						{
-							End (CheatMessage);
-						}
-						else
-						{
-							sessionMin = newMin;
-							UpdateGuess ();
-						}
-					}
-					else if (Input.GetKeyDown (KeyCode.DownArrow))
-					{
-						int newMax = sessionGuess - 1;
-						if (newMax < sessionMin)
-						{
-							End (CheatMessage);
-						}
-						else
-						{
-							sessionMax = newMax;
-							UpdateGuess ();
-						}
-					}
-				}
+				ProcessInput ();
 			}
 		}
 		else if (Input.anyKeyDown)

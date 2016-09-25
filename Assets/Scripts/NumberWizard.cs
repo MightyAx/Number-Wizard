@@ -40,8 +40,8 @@ public class NumberWizard : MonoBehaviour
 	void End (string scoreMessage)
 	{
 		print (string.Format (scoreMessage, score));
-		inPlay = false;
 		print ("Press any key to play again.");
+		inPlay = false;
 	}
 
 	// Update is called once per frame

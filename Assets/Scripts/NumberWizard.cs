@@ -3,13 +3,13 @@ using System.Collections;
 
 public class NumberWizard : MonoBehaviour
 {
-	const int c_min = 1;
-	const int c_max = 1000000;
-	const string successMessage = "I guessed correctly, in {0:#,#} guesses!";
-	const string cheatMessage = "I spent {0:#,#} turns guessing but I think you're cheating, please play fair!";
+	const int MinNumber = 1;
+	const int MaxNumber = 1000000;
+	const string SuccessMessage = "I guessed correctly, in {0:#,#} guesses!";
+	const string CheatMessage = "I spent {0:#,#} turns guessing but I think you're cheating, please play fair!";
 
-	int min, max, guess, score;
-	bool inPlay;
+	int sessionMin, sessionMax, sessionGuess, sessionScore;
+	bool sessionInPlay;
 
 	// Use this for initialization
 	void Start ()
@@ -20,70 +20,70 @@ public class NumberWizard : MonoBehaviour
 
 	void StartGame ()
 	{
-		min = c_min;
-		max = c_max;
-		score = 0;
-		inPlay = true;
+		sessionMin = MinNumber;
+		sessionMax = MaxNumber;
+		sessionScore = 0;
+		sessionInPlay = true;
 		print ("==============================================");
-		print (string.Format ("Pick a number between {0:#,#} and {1:#,#}. Don't tell me what it is. I'm going to guess!", c_min, c_max));
+		print (string.Format ("Pick a number between {0:#,#} and {1:#,#}. Don't tell me what it is. I'm going to guess!", MinNumber, MaxNumber));
 		UpdateGuess ();
 	}
 
 	void UpdateGuess ()
 	{
-		score++;
-		guess = Random.Range (min, max + 1);
-		print (string.Format ("Is it Higher, Lower or Equal to: {0:#,#}?", guess));
+		sessionScore++;
+		sessionGuess = Random.Range (sessionMin, sessionMax + 1);
+		print (string.Format ("Is it Higher, Lower or Equal to: {0:#,#}?", sessionGuess));
 		print ("Higher (Up Arrow), Lower (Down Arrow) or Equal (Return)");
 	}
 
 	void End (string scoreMessage)
 	{
-		print (string.Format (scoreMessage, score));
+		print (string.Format (scoreMessage, sessionScore));
 		print ("Press any key to play again.");
-		inPlay = false;
+		sessionInPlay = false;
 	}
 
 	// Update is called once per frame
 	void Update ()
 	{
-		if (inPlay)
+		if (sessionInPlay)
 		{
 			if (Input.GetKeyDown (KeyCode.Return))
 			{
-				End (successMessage);
+				End (SuccessMessage);
 			}
 			else if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.DownArrow))
 			{
-				if (guess == min && guess == max)
+				if (sessionGuess == sessionMin && sessionGuess == sessionMax)
 				{
-					End (cheatMessage);
+					End (CheatMessage);
 				}
 				else
 				{
 					if (Input.GetKeyDown (KeyCode.UpArrow))
 					{
-						int newMin = guess + 1;
-						if (newMin > max)
+						int newMin = sessionGuess + 1;
+						if (newMin > sessionMax)
 						{
-							End (cheatMessage);
+							End (CheatMessage);
 						}
 						else
 						{
-							min = newMin;
+							sessionMin = newMin;
 							UpdateGuess ();
 						}
 					}
 					else if (Input.GetKeyDown (KeyCode.DownArrow))
 					{
-						int newMax = guess - 1;
-						if (newMax < min)
+						int newMax = sessionGuess - 1;
+						if (newMax < sessionMin)
 						{
-							End (cheatMessage);
+							End (CheatMessage);
 						}
 						else
 						{
-							max = newMax;
+							sessionMax = newMax;
 							UpdateGuess ();
 						}
 					}
